@@ -6,7 +6,7 @@
 # ==========================
 
 # list include paths
-include_directories( ${BamTools_SOURCE_DIR}/src )
+include_directories( ${BamTools_SOURCE_DIR}/src ${ZLIB_INCLUDE} )
 
 # add compiler definitions 
 add_definitions( -DBAMTOOLS_API_LIBRARY ) # (for proper exporting of library symbols)
@@ -43,15 +43,14 @@ set_target_properties( BamTools-static PROPERTIES
                        OUTPUT_NAME "bamtools" 
                        PREFIX "lib" )
 
-# link libraries automatically with zlib (and Winsock2, if applicable)
+set( APILibs "" )
+# link libraries automatically with Winsock2, for Windows
 if( WIN32 )
-    set( APILibs z ws2_32 )
-else()
-    set( APILibs z )
+    set( APILibs ws2_32 )
 endif()
 
-target_link_libraries( BamTools        ${APILibs} )
-target_link_libraries( BamTools-static ${APILibs} )
+target_link_libraries( BamTools        ${APILibs} ${ZLIB_LIBRARY_SHARED} )
+target_link_libraries( BamTools-static ${APILibs} ${ZLIB_LIBRARY_STATIC} )
 
 # set library install destinations
 install( TARGETS BamTools        LIBRARY DESTINATION "lib/bamtools" RUNTIME DESTINATION "bin")
@@ -81,3 +80,9 @@ ExportHeader(APIHeaders SamSequenceDictionary.h  ${ApiIncludeDir})
 
 set( AlgorithmsIncludeDir "api/algorithms" )
 ExportHeader( AlgorithmsHeaders algorithms/Sort.h ${AlgorithmsIncludeDir} )
+
+
+if (ADD_ZLIB_PROJECT)
+  add_dependencies(BamTools ${ZLIB_PROJECT})
+  add_dependencies(BamTools-static ${ZLIB_PROJECT})
+endif()
