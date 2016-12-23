@@ -5,8 +5,8 @@
 # src/
 # ==========================
 
-add_subdirectory( api )
 add_subdirectory( third_party )
+add_subdirectory( api )
 add_subdirectory( toolkit )
 add_subdirectory( utils )
 
