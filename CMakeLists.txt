@@ -23,10 +23,10 @@ endmacro( ENSURE_OUT_OF_SOURCE_BUILD )
 
 ensure_out_of_source_build( "
   ${PROJECT_NAME} requires an out of source build.
-  $ mkdir build 
+  $ mkdir build
   $ cd build
   $ cmake ..
-  $ make 
+  $ make
 (or the Windows equivalent)\n" )
 
 # set BamTools version information
@@ -38,8 +38,11 @@ set( BamTools_VERSION_BUILD 1 )
 set( EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin" )
 set( LIBRARY_OUTPUT_PATH    "${CMAKE_SOURCE_DIR}/lib" )
 
+if (NOT CMAKE_BUILD_TYPE)
+    set( CMAKE_BUILD_TYPE Release )
+endif(NOT CMAKE_BUILD_TYPE)
 # define compiler flags for all code
-set( CMAKE_BUILD_TYPE Release )
+#set( CMAKE_BUILD_TYPE Release )
 set( CMAKE_CXX_FLAGS_RELEASE "-std=c++98 ${CMAKE_CXX_FLAGS_RELEASE}" )
 add_definitions( -Wall -D_FILE_OFFSET_BITS=64 )
 
